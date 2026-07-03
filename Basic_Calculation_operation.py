@@ -46,5 +46,21 @@ def main():
         print(error)
 
 
+def test_add_two_numbers():
+    result = add(10, 10)
+    assert result == 20
+
+def test_subtract_two_numbers():
+    result = sub(10, 10)
+    assert result == 0
+
+def test_multiply_two_numbers():
+    result = mul(10, 10)
+    assert result == 100
+
+def test_divide_two_numbers():
+    result = div(10, 10)
+    assert result == 1
+
 if __name__ == "__main__":
     main()
