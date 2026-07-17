@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Page 2 - Product Filter and Cart</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 24px; }
+        .product { border: 1px solid #ddd; padding: 12px; margin: 8px; width: 180px; display: inline-block; }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+    <h2>Products</h2>
+    <select id="categoryFilter">
+        <option value="all">All</option>
+        <option value="electronics">Electronics</option>
+        <option value="clothing">Clothing</option>
+        <option value="books">Books</option>
+    </select>
+    <input id="priceFilter" type="range" min="10" max="200" value="200" />
+    <span id="priceValue">200</span>
+
+    <div id="productList">
+        <div class="product" data-category="electronics" data-price="120"><h4>Laptop</h4><p>$120</p><button class="addToCart">Add to cart</button></div>
+        <div class="product" data-category="clothing" data-price="40"><h4>T-Shirt</h4><p>$40</p><button class="addToCart">Add to cart</button></div>
+        <div class="product" data-category="books" data-price="30"><h4>Python Book</h4><p>$30</p><button class="addToCart">Add to cart</button></div>
+        <div class="product" data-category="electronics" data-price="80"><h4>Headphones</h4><p>$80</p><button class="addToCart">Add to cart</button></div>
+    </div>
+
+    <h2>Cart</h2>
+    <table>
+        <thead>
+            <tr><th>Product</th><th>Price</th><th>Qty</th><th>Total</th></tr>
+        </thead>
+        <tbody id="cartBody"></tbody>
+    </table>
+    <p id="cartTotal">Total: $0</p>
+
+    <script>
+        const priceFilter = document.getElementById('priceFilter');
+        const priceValue = document.getElementById('priceValue');
+        const categoryFilter = document.getElementById('categoryFilter');
+        const products = Array.from(document.querySelectorAll('.product'));
+
+        function updateProducts() {
+            const maxPrice = Number(priceFilter.value);
+            const category = categoryFilter.value;
+            priceValue.textContent = maxPrice;
+            products.forEach(product => {
+                const price = Number(product.dataset.price);
+                const matchesPrice = price <= maxPrice;
+                const matchesCategory = category === 'all' || product.dataset.category === category;
+                product.classList.toggle('hidden', !(matchesPrice && matchesCategory));
+            });
+        }
+
+        priceFilter.addEventListener('input', updateProducts);
+        categoryFilter.addEventListener('change', updateProducts);
+
+        const cart = {};
+        document.querySelectorAll('.addToCart').forEach(button => {
+            button.addEventListener('click', function () {
+                const product = button.parentElement;
+                const name = product.querySelector('h4').textContent;
+                const price = Number(product.dataset.price);
+                cart[name] = cart[name] || { price, qty: 0 };
+                cart[name].qty += 1;
+                renderCart();
+            });
+        });
+
+        function renderCart() {
+            const cartBody = document.getElementById('cartBody');
+            cartBody.innerHTML = '';
+            let total = 0;
+            Object.entries(cart).forEach(([name, item]) => {
+                const itemTotal = item.price * item.qty;
+                total += itemTotal;
+                const row = document.createElement('tr');
+                row.innerHTML = `<td>${name}</td><td>$${item.price}</td><td><input class="qtyInput" type="number" min="1" value="${item.qty}" /></td><td>$${itemTotal}</td>`;
+                cartBody.appendChild(row);
+            });
+            document.getElementById('cartTotal').textContent = `Total: $${total}`;
+            document.querySelectorAll('.qtyInput').forEach(input => {
+                input.addEventListener('change', function () {
+                    const row = input.closest('tr');
+                    const name = row.children[0].textContent;
+                    cart[name].qty = Number(input.value);
+                    renderCart();
+                });
+            });
+        }
+    </script>
+</body>
+</html>

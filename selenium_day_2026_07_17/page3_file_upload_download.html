@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Page 3 - File Upload and Download</title>
+</head>
+<body>
+    <h2>File Upload Validation Demo</h2>
+    <form id="fileForm">
+        <input id="fileInput" type="file" accept=".png,.jpg,.jpeg" />
+        <button type="submit">Upload</button>
+    </form>
+    <p id="uploadStatus"></p>
+    <a id="downloadLink" href="sample_download.txt" download>Download Sample File</a>
+
+    <script>
+        const fileForm = document.getElementById('fileForm');
+        fileForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            const file = document.getElementById('fileInput').files[0];
+            if (!file) {
+                document.getElementById('uploadStatus').textContent = 'Please choose a file.';
+                return;
+            }
+            const ext = file.name.split('.').pop().toLowerCase();
+            if (['png', 'jpg', 'jpeg'].includes(ext)) {
+                document.getElementById('uploadStatus').textContent = 'Valid file uploaded successfully.';
+            } else {
+                document.getElementById('uploadStatus').textContent = 'Unsupported file format rejected.';
+            }
+        });
+    </script>
+</body>
+</html>

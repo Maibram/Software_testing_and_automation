@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Page 1 - Contact, Login, Registration</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 24px; }
+        .section { margin-bottom: 28px; }
+    </style>
+</head>
+<body>
+    <div class="section">
+        <h2>Contact Form</h2>
+        <form id="contactForm">
+            <input id="contactName" placeholder="Name" required /><br /><br />
+            <input id="contactEmail" type="email" placeholder="Email" required /><br /><br />
+            <input id="contactSubject" placeholder="Subject" required /><br /><br />
+            <textarea id="contactMessage" placeholder="Message" required></textarea><br /><br />
+            <button type="submit">Submit</button>
+        </form>
+        <p id="contactStatus"></p>
+    </div>
+
+    <div class="section">
+        <h2>Login</h2>
+        <form id="loginForm">
+            <input id="loginEmail" type="email" placeholder="Email" required /><br /><br />
+            <input id="loginPassword" type="password" placeholder="Password" required /><br /><br />
+            <button type="submit">Login</button>
+        </form>
+        <p id="loginError"></p>
+    </div>
+
+    <div class="section">
+        <h2>Registration</h2>
+        <form id="registerForm">
+            <input id="regName" placeholder="Full Name" required /><br /><br />
+            <input id="regEmail" type="email" placeholder="Email" required /><br /><br />
+            <input id="regPassword" type="password" placeholder="Password" required /><br /><br />
+            <button type="submit">Register</button>
+        </form>
+        <p id="registerStatus"></p>
+    </div>
+
+    <script>
+        const contactForm = document.getElementById('contactForm');
+        contactForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            document.getElementById('contactStatus').textContent = 'Contact form submitted successfully.';
+        });
+
+        const loginForm = document.getElementById('loginForm');
+        loginForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            if (email === 'invalid@example.com' && password === 'wrongpass') {
+                document.getElementById('loginError').textContent = 'Your email or password is incorrect!';
+            } else {
+                document.getElementById('loginError').textContent = 'Login successful.';
+            }
+        });
+
+        const registerForm = document.getElementById('registerForm');
+        registerForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            document.getElementById('registerStatus').textContent = 'Account Created!';
+        });
+    </script>
+</body>
+</html>
